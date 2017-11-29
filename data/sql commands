@@ -1,0 +1,35 @@
+sudo -u postgres psql instr_study6 -c "SELECT row_to_json(t) FROM
+(SELECT
+t3.package_name, t4.binary_name as source, to_hex(t1.prefix) as prefix, to_hex(t1.opcode) as opcode, t1.size, upper(t1.mnem) as mnem, SUM(t1.count) as count, array_agg(distinct t2.tag) as tag
+FROM
+package_opcode_source as t1
+LEFT JOIN
+mnem_tags as t2
+ON
+t1.mnem = lower(t2.mnem),
+package_id as t3,
+binary_id as t4
+WHERE
+t3.id = t1.pkg_id and t4.id = t1.source
+GROUP BY
+t3.package_name, t4.binary_name, t1.prefix, t1.opcode, t1.size, t1.mnem
+ORDER BY
+t3.package_name, t4.binary_name, t1.prefix, t1.opcode, t1.size, t1.mnem
+) t;" > data_packages_source.json
+
+sudo -u postgres psql instr_study4 -c "SELECT row_to_json(t)
+FROM
+(SELECT
+to_hex(t1.prefix) as prefix, to_hex(t1.opcode) as opcode, t1.size, upper(t1.mnem) as mnem, t4.binary_name as source, SUM(t1.count) as count, t2.tag as tag, array_agg(distinct t3.package_name) as package_name
+FROM
+package_opcode_source as t1
+LEFT JOIN
+mnem_tags as t2 on t1.mnem = lower(t2.mnem),
+package_id as t3,
+binary_id as t4
+WHERE
+t3.id = t1.pkg_id and t4.id = t1.source
+GROUP BY
+t1.prefix, t1.opcode, t1.size, t1.mnem, t4.binary_name
+ORDER BY
+t1.prefix, t1.opcode, t1.size, t1.mnem) t;" > data_sourced.json
