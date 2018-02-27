@@ -310,6 +310,44 @@ d3.json('grouped_data.json', function(error,data) {
 		window.open('array.html')
 	});
 
+	d3.selectAll('a#gen-prefix-list').on('click', function () {
+		data = prefixDim.top(Number.POSITIVE_INFINITY);
+		var prefixDict = {};
+		_.forEach(data, function(d) {
+			var key = d.prefix;
+			if (key in prefixDict) {
+				prefixDict[key] += d.count;
+			} else {
+				prefixDict[key] = d.count;
+			}
+		});
+		var prefixArray = [];
+		_.forEach(Object.keys(prefixDict), function(item) {
+			prefixArray.push(item + '|' + prefixDict[item]);
+		});
+		localStorage.setItem('array', JSON.stringify(prefixArray));
+		window.open('array.html')
+	});
+
+	d3.selectAll('a#gen-size-list').on('click', function () {
+		data = sizeDim.top(Number.POSITIVE_INFINITY);
+		var sizeDict = {};
+		_.forEach(data, function(d) {
+			var key = d.size;
+			if (key in sizeDict) {
+				sizeDict[key] += d.count;
+			} else {
+				sizeDict[key] = d.count;
+			}
+		});
+		var sizeArray = [];
+		_.forEach(Object.keys(sizeDict), function(item) {
+			sizeArray.push(item + '|' + sizeDict[item]);
+		});
+		localStorage.setItem('array', JSON.stringify(sizeArray));
+		window.open('array.html')
+	});
+
 	$("#search-input").keyup(function () {
 		var s = $(this ).val().toLowerCase();
 		searchDim.filter(function (d) {

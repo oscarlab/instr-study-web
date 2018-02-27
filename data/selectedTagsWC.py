@@ -50,12 +50,13 @@ with open('mnemonicranked.csv', 'r') as mnemonicRankedFile:
 	mnemonicRankedFile.close()
 
 # Set this with tags you want to check.
-supportedTags = ["DATA", "CONTROL FLOW", "BITWISE", "BINARY ARITHMETIC", "SHIFT AND ROTATE", "MISC", "STRING", "SYSTEM", "LOGICAL", "I/O", "FLAG REGISTER INSN", "X87 FPU", "MMX", "SSE"]
+supportedTags = ["SYSTEM", "DATA", "CONTROL FLOW", "BINARY ARITHMETIC", "BITWISE", "MISC", "LOGICAL", "SHIFT AND ROTATE", "SSE", "STRING",  "I/O", "FLAG REGISTER INSN", "X87 FPU", "MMX"]
 
 # Now comes the task of figuring out how many packages are supported as each
 # instruction is added.
 
 supportedMnemonics = []
+supportedPackages = []
 numSupportedPackages = 0
 numerator = 0.0
 with open('selectedTagsWCMnem.csv', 'w+') as mnemonicFile:
@@ -71,6 +72,7 @@ with open('selectedTagsWCMnem.csv', 'w+') as mnemonicFile:
 			packagesMnemonics[package].discard(mnemonic)
 			if len(packagesMnemonics[package]) == 0:
 				numSupportedPackages += 1
+				supportedPackages.append(package)
 				popMe.append(package)
 		for package in popMe:
 			packagesMnemonics.pop(package,None)
