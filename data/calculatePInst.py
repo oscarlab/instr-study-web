@@ -2,10 +2,16 @@ import os
 import json
 
 PInstDict = {}
-totalNumInstallations =  2964073.0
+totalNumInstallations =  2963664.0
+
+benchmarkListFile = open('list')
+
+benchmarkList = benchmarkListFile.read().strip().split(",")
 
 for filename in os.listdir('packages_sourced'):
-	# print "filename: "+filename
+	if filename in benchmarkList:
+		print filename
+		continue
 	with open('packages_sourced/'+filename, 'r+') as package_file:
 		data = json.loads(package_file.read())
 		name = data['name']

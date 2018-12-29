@@ -18,7 +18,7 @@ for line in tagFile:
 tagFile.close()
 
 tagsInHead = {}
-for i in range(0, 172):
+for i in range(0, 174):
 	mnemonicsAdded = steps[str(i)]['newlyAddedMnemonics']
 	for mnemonic in mnemonicsAdded:
 		try:

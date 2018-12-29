@@ -97,7 +97,11 @@ for group in groups.keys():
 			packageDict['packages'] = []
 			tempPackages = insn.pop('packages')
 			for package in tempPackages:
-				rank, inst = popDict[package]
+				try:
+					rank, inst = popDict[package]
+				except Exception as e:
+					print e
+					continue
 				pack = {}
 				pack["name"] = package
 				pack["rank"] = rank
